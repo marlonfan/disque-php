@@ -1,5 +1,5 @@
 {
-    "name": "mariano/disque-php",
+    "name": "marlonfan/disque-php",
     "description": "PHP library for Disque, an in-memory, distributed job queue",
     "type": "library",
     "keywords": [
