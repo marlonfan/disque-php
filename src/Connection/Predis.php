@@ -53,10 +53,24 @@ class Predis extends BaseConnection implements ConnectionInterface
         if (!$this->isConnected()) {
             throw new ConnectionException('No connection established');
         }
-        return $this->client->executeRaw(array_merge(
-            [$command->getCommand()],
-            $command->getArguments()
-        ));
+        try {
+            return $this->client->executeRaw(array_merge(
+                [$command->getCommand()],
+                $command->getArguments()
+            ));
+        } catch (\Throwable $e) {
+            $this->reconnect();
+            return $this->client->executeRaw(array_merge(
+                [$command->getCommand()],
+                $command->getArguments()
+            ));
+        }
+    }
+
+    public function reconnect()
+    {
+        $this->disconnect();
+        $this->connect();
     }
 
     /**
